@@ -1,0 +1,476 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Grand Sushi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Layout: black stage, one large red sun (hinomaru) anchors the hero; menu is a tabbed grid; order panel sits last with a live cart. */
+:root{
+  --ink:#0a0a0b;
+  --coal:#141415;
+  --line:#2b2a2c;
+  --paper:#f3eee8;
+  --mute:#a29b93;
+  --red:#e3261c;
+  --red-deep:#8f120d;
+  --white:#fbfaf8;
+  --gold:#f5b82e;
+  --wasabi:#8fd14f;
+  --f-display:'Montserrat','Segoe UI',Arial,sans-serif;
+  --f-body:'Montserrat','Segoe UI',Arial,sans-serif;
+  --f-mono:'JetBrains Mono',ui-monospace,Consolas,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--ink);color:var(--paper);font-family:var(--f-body);font-size:16px;line-height:1.6;padding-inline:clamp(16px,4vw,48px);padding-block:0;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+h1,h2,h3{font-family:var(--f-display);margin:0;text-wrap:balance;line-height:1.05;letter-spacing:-.02em}
+p{margin:0}
+.wrap{max-width:1160px;margin-inline:auto}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--red)}
+:focus-visible{outline:2px solid var(--red);outline-offset:3px}
+
+/* nav */
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:rgba(10,10,11,.88);backdrop-filter:blur(10px);margin-inline:calc(-1*clamp(16px,4vw,48px));padding-inline:clamp(16px,4vw,48px);border-bottom:1px solid var(--line)}
+.nav-in{max-width:1160px;margin-inline:auto;display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:14px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:900;letter-spacing:.04em;font-size:18px}
+.logo i{width:22px;height:22px;border-radius:50%;background:var(--red);display:block;box-shadow:0 0 0 4px rgba(227,38,28,.18)}
+.links{display:flex;gap:26px;font-size:14px;font-weight:500;color:var(--mute)}
+.links a:hover{color:var(--paper)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--red);color:#fff;border:0;border-radius:999px;padding:13px 26px;font:700 14px var(--f-body);letter-spacing:.02em;cursor:pointer;transition:background .2s,transform .2s}
+.btn:hover{background:#f03a2f;transform:translateY(-1px)}
+.btn.ghost{background:transparent;border:1.5px solid var(--line);color:var(--paper)}
+.btn.ghost:hover{border-color:var(--red);background:transparent}
+.cart-pill{font-family:var(--f-mono);font-size:13px}
+@media(max-width:760px){.links{display:none}}
+
+/* hero */
+.hero{position:relative;display:grid;grid-template-columns:1.1fr .9fr;gap:32px;align-items:center;padding-block:clamp(40px,7vw,96px)}
+.hero>*{min-width:0}
+.hero h1{font-size:clamp(44px,8.4vw,104px);font-weight:900;margin-block:18px 22px}
+.hero h1 em{font-style:normal;color:var(--red)}
+.hero p.lead{color:var(--mute);max-width:46ch;font-size:17px}
+.hero .cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}
+.facts{display:flex;flex-wrap:wrap;gap:28px;margin-top:40px;font-family:var(--f-mono);font-size:13px;color:var(--mute)}
+.facts b{display:block;color:var(--paper);font:800 26px var(--f-display);letter-spacing:-.02em}
+.sun{position:relative;aspect-ratio:1;width:100%;max-width:480px;justify-self:center}
+.sun .disc{position:absolute;inset:6%;border-radius:50%;background:radial-gradient(circle at 35% 30%,#f4463b,var(--red) 55%,var(--red-deep));box-shadow:0 30px 120px rgba(227,38,28,.35)}
+.sun .ring{position:absolute;inset:0;border-radius:50%;border:1px solid var(--line)}
+.sun .ring.r2{inset:-7%;border-style:dashed;opacity:.6}
+.sun svg{position:absolute;inset:22%;width:56%;height:56%;filter:drop-shadow(0 14px 24px rgba(0,0,0,.45))}
+.sun .kanji{position:absolute;right:2%;bottom:4%;font:800 56px/1 var(--f-display);color:var(--paper);writing-mode:vertical-rl;letter-spacing:.1em;opacity:.9}
+.tag{position:absolute;left:-2%;top:12%;background:var(--ink);border:1px solid var(--line);border-radius:14px;padding:10px 14px;font-family:var(--f-mono);font-size:12px}
+.tag b{color:var(--wasabi);font-weight:500}
+.facts div:first-child b{color:var(--gold)}
+.steps .n{color:var(--gold)!important}
+.hours b{color:var(--gold)}
+@media(max-width:860px){.hero{grid-template-columns:1fr}.sun{max-width:340px}.sun .kanji{font-size:40px}}
+
+/* ticker */
+.ticker{margin-inline:calc(-1*clamp(16px,4vw,48px));background:var(--red);color:#fff;overflow:hidden;white-space:nowrap;padding-block:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;font-size:13px}
+.ticker div{display:inline-block;padding-left:100%;animation:slide 28s linear infinite}
+@keyframes slide{to{transform:translateX(-100%)}}
+@media(prefers-reduced-motion:reduce){.ticker div{animation:none;padding-left:16px}html{scroll-behavior:auto}}
+
+section{padding-block:clamp(56px,8vw,104px)}
+/* white band: full-bleed light section between black ones */
+section.light{background:var(--white);color:var(--ink);box-shadow:0 0 0 100vmax var(--white);clip-path:inset(0 -100vmax)}
+.light .eyebrow{color:var(--red)}
+.light .sec-head p{color:#6a635c}
+.light .tab{border-color:#d8d2ca;color:var(--ink)}
+.light .tab:hover{border-color:var(--red)}
+.light .tab[aria-selected="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+.light .card{background:#fff;border-color:#e8e3dc}
+.light .card:hover{border-color:var(--red)}
+.light .card .desc{color:#6a635c}
+.light .price small{color:#8a837b}
+.light .rev figure{background:#fff;border-color:#e8e3dc}
+.light .rev figcaption,.light .note{color:#6a635c}
+.badge{background:var(--gold);color:var(--ink)}
+.badge.hot{background:var(--red);color:#fff}
+.badge.veg{background:var(--wasabi);color:var(--ink)}
+.sec-head{display:flex;justify-content:space-between;align-items:end;gap:24px;flex-wrap:wrap;margin-bottom:36px}
+.sec-head h2{font-size:clamp(32px,5vw,56px);font-weight:800;margin-top:10px}
+.sec-head p{color:var(--mute);max-width:40ch}
+
+/* menu */
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:28px}
+.tab{background:transparent;border:1.5px solid var(--line);color:var(--paper);border-radius:999px;padding:10px 20px;font:600 14px var(--f-body);cursor:pointer;transition:all .2s}
+.tab:hover{border-color:var(--red)}
+.tab[aria-selected="true"]{background:var(--red);border-color:var(--red);color:#fff}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px}
+.card{background:var(--coal);border:1px solid var(--line);border-radius:20px;padding:18px;display:flex;flex-direction:column;gap:14px;min-width:0;transition:border-color .2s,transform .2s}
+.card:hover{border-color:var(--red);transform:translateY(-3px)}
+.thumb{aspect-ratio:4/3;border-radius:14px;background:radial-gradient(circle at 50% 120%,rgba(227,38,28,.35),transparent 60%),#0f0f10;display:grid;place-items:center;position:relative;overflow:hidden}
+.thumb svg{width:58%;max-width:150px}
+.badge{position:absolute;left:10px;top:10px;background:var(--red);color:#fff;font:700 11px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;padding:4px 10px;border-radius:999px}
+.card h3{font-size:19px;font-weight:700;letter-spacing:-.01em;line-height:1.2}
+.card .desc{color:var(--mute);font-size:14px;line-height:1.5;flex:1}
+.card .row{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.price{font:800 20px var(--f-display);letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.price small{font:500 12px var(--f-mono);color:var(--mute);margin-left:2px}
+.add{width:42px;height:42px;border-radius:50%;border:0;background:var(--red);color:#fff;font:400 24px/1 var(--f-body);cursor:pointer;transition:transform .15s,background .2s}
+.add:hover{background:#f03a2f;transform:scale(1.08)}
+
+/* hit set */
+.hit{display:grid;grid-template-columns:1fr 1fr;gap:0;border-radius:28px;overflow:hidden;border:1px solid var(--line);background:var(--coal)}
+.hit>*{min-width:0}
+.hit .l{background:var(--red);padding:clamp(28px,5vw,56px);display:flex;flex-direction:column;justify-content:space-between;gap:28px;color:#fff}
+.hit .l h2{font-size:clamp(34px,5vw,60px);font-weight:900}
+.hit .l p{max-width:34ch;opacity:.92}
+.hit .r{padding:clamp(28px,5vw,56px);display:flex;flex-direction:column;gap:18px;background:var(--white);color:var(--ink)}
+.hit ul{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.hit li{display:flex;justify-content:space-between;gap:16px;border-bottom:1px dashed #cfc8bf;padding-bottom:10px;font-size:15px}
+.hit li span:last-child{font-family:var(--f-mono);color:#6a635c;white-space:nowrap}
+.hit .tot{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.hit .tot s{color:#8a837b;font-family:var(--f-mono)}
+.hit .l .eyebrow{color:var(--gold)!important;opacity:1!important}
+@media(max-width:820px){.hit{grid-template-columns:1fr}}
+
+/* process */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid var(--line)}
+.steps>div{padding:28px 24px 8px 0;min-width:0}
+.steps .n{font:500 13px var(--f-mono);color:var(--red);letter-spacing:.14em}
+.steps h3{font-size:20px;font-weight:700;margin-block:14px 8px;letter-spacing:-.01em}
+.steps p{color:var(--mute);font-size:14px}
+@media(max-width:860px){.steps{grid-template-columns:1fr 1fr}}
+@media(max-width:480px){.steps{grid-template-columns:1fr}}
+
+/* delivery */
+.deliv{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.deliv>*{min-width:0}
+.box{background:var(--coal);border:1px solid var(--line);border-radius:20px;padding:28px}
+.box h3{font-size:22px;font-weight:700;margin-bottom:18px}
+.tbl{width:100%;border-collapse:collapse;font-size:15px}
+.tbl td{padding:12px 0;border-bottom:1px solid var(--line)}
+.tbl td:last-child{text-align:right;font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.tbl tr:last-child td{border:0}
+.free{color:var(--wasabi)}
+.hours{display:flex;flex-direction:column;gap:6px;margin-top:6px}
+.hours b{font:800 44px var(--f-display);letter-spacing:-.03em}
+@media(max-width:760px){.deliv{grid-template-columns:1fr}}
+
+/* reviews */
+.rev{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.rev figure{margin:0;background:var(--coal);border:1px solid var(--line);border-radius:20px;padding:26px;display:flex;flex-direction:column;gap:18px;min-width:0}
+.rev blockquote{margin:0;font-size:16px;line-height:1.6}
+.rev figcaption{font:500 12px var(--f-mono);color:var(--mute);letter-spacing:.06em}
+.stars{color:var(--gold);letter-spacing:.2em;font-size:16px}
+@media(max-width:860px){.rev{grid-template-columns:1fr}}
+.note{margin-top:14px;font:400 12px var(--f-mono);color:var(--mute)}
+
+/* order */
+.order{display:grid;grid-template-columns:1.1fr .9fr;gap:16px;align-items:start}
+.order>*{min-width:0}
+.cartbox{background:var(--coal);border:1px solid var(--line);border-radius:20px;padding:28px}
+.cartbox h3,.formbox h3{font-size:22px;font-weight:700;margin-bottom:18px}
+.line{display:grid;grid-template-columns:1fr auto auto;gap:14px;align-items:center;padding-block:12px;border-bottom:1px solid var(--line);font-size:15px}
+.line .q{display:flex;align-items:center;gap:8px;font-family:var(--f-mono)}
+.q button{width:28px;height:28px;border-radius:50%;border:1px solid var(--line);background:transparent;color:var(--paper);cursor:pointer;font-size:16px;line-height:1}
+.q button:hover{border-color:var(--red)}
+.empty{color:var(--mute);padding-block:16px}
+.sum{display:flex;justify-content:space-between;align-items:baseline;margin-top:18px}
+.sum b{font:800 30px var(--f-display);letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.formbox{background:#1a0e0d;border:1px solid #3a1714;border-radius:20px;padding:28px}
+label{display:block;font:500 12px var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--mute);margin-bottom:6px}
+input,textarea{width:100%;background:var(--ink);border:1.5px solid var(--line);border-radius:12px;color:var(--paper);padding:13px 14px;font:500 15px var(--f-body);margin-bottom:16px}
+input:focus,textarea:focus{outline:none;border-color:var(--red)}
+textarea{min-height:84px;resize:vertical}
+.formbox .btn{width:100%}
+.msg{margin-top:14px;font-size:14px;color:var(--mute);min-height:1.5em}
+@media(max-width:860px){.order{grid-template-columns:1fr}}
+
+footer{border-top:1px solid var(--line);margin-inline:calc(-1*clamp(16px,4vw,48px));padding:40px clamp(16px,4vw,48px) 56px}
+.foot{max-width:1160px;margin-inline:auto;display:flex;justify-content:space-between;gap:28px;flex-wrap:wrap;color:var(--mute);font-size:14px}
+.foot>*{min-width:0}
+.foot b{color:var(--paper);display:block;margin-bottom:6px}
+</style>
+
+<nav><div class="nav-in">
+  <a class="logo" href="#top"><i></i>GRAND SUSHI</a>
+  <div class="links"><a href="#menu">Мәзір</a><a href="#set">Хит сет</a><a href="#process">Дайындау</a><a href="#delivery">Жеткізу</a><a href="#reviews">Пікірлер</a></div>
+  <a class="btn" href="#order">Себет <span class="cart-pill" id="navCount">0</span></a>
+</div></nav>
+
+<main class="wrap" id="top">
+<header class="hero">
+  <div>
+    <span class="eyebrow">Суши · Роллы · Пицца · Ыстық тағам</span>
+    <h1>Grand<br><em>Sushi</em></h1>
+    <p class="lead">Суши, роллдар, пицца, ыстық тағамдар мен бургерлер. Жылдам жеткізу, төлеуге Kaspi Red қолайлы. Таңдаңыз, себетке салыңыз, қалғанын біз істейміз.</p>
+    <div class="cta"><a class="btn" href="#menu">Мәзірді ашу</a><a class="btn ghost" href="https://wa.me/77776841200" target="_blank" rel="noopener">WhatsApp-пен жазу</a></div>
+    <div class="facts">
+      <div><b>22 мың</b>Instagram жазылушы</div>
+      <div><b>5</b>бағыт мәзірде</div>
+      <div><b>11:00–02:00</b>күн сайын</div>
+    </div>
+  </div>
+  <div class="sun" aria-hidden="true">
+    <div class="ring r2"></div><div class="ring"></div><div class="disc"></div>
+    <div id="heroRoll"></div>
+    <div class="kanji">寿司</div>
+    <div class="tag"><b>●</b> бүгін жаңа піскен</div>
+  </div>
+</header>
+</main>
+
+<div class="ticker" aria-hidden="true" style="border-block:3px solid var(--gold)"><div>Жылдам жеткізу · Kaspi Red · 11:00–02:00 · WhatsApp-пен тапсырыс · Жылдам жеткізу · Kaspi Red · 11:00–02:00 · WhatsApp-пен тапсырыс ·</div></div>
+
+<main class="wrap">
+<section id="menu" class="light">
+  <div class="sec-head">
+    <div><span class="eyebrow">Мәзір</span><h2>Не тапсырамыз?</h2></div>
+    <p>Бөлімді таңдап, ұнаған позицияны себетке қосыңыз. Атаулар мен бағалар мысал, нақты мәзірмен ауыстырылады.</p>
+  </div>
+  <div class="tabs" role="tablist" id="tabs"></div>
+  <div class="grid" id="grid"></div>
+</section>
+
+<section id="set">
+  <div class="hit">
+    <div class="l">
+      <div><span class="eyebrow" style="color:#fff;opacity:.85">Хит сет</span><h2 style="margin-top:12px">Grand<br>сет</h2></div>
+      <p>Төрт адамға арналған ең көп сатылатын жиынтық. Бір сеттен бастаңыз, ұнаса қайталаңыз.</p>
+      <div><button class="btn" id="addSet" style="background:#0a0a0b">Сетті себетке қосу</button></div>
+    </div>
+    <div class="r">
+      <ul>
+        <li><span>Филадельфия ролл</span><span>8 дана</span></li>
+        <li><span>Калифорния ролл</span><span>8 дана</span></li>
+        <li><span>Спайси ролл</span><span>8 дана</span></li>
+        <li><span>Лосось нигири</span><span>6 дана</span></li>
+        <li><span>Тунец нигири</span><span>4 дана</span></li>
+        <li><span>Васаби, имбирь, соя соусы</span><span>4 порция</span></li>
+      </ul>
+      <div class="tot"><span class="price" style="font-size:34px">18 900 <small>₸</small></span><s>22 400 ₸</s></div>
+    </div>
+  </div>
+</section>
+
+<section id="process">
+  <div class="sec-head">
+    <div><span class="eyebrow">Дайындау</span><h2>Тапсырыстан есікке дейін</h2></div>
+  </div>
+  <div class="steps">
+    <div><div class="n">1 · ТАПСЫРЫС</div><h3>Қабылдаймыз</h3><p>Тапсырыс түсісімен аспазға жіберіледі, күту тізімі жоқ.</p></div>
+    <div><div class="n">2 · ДАЙЫНДАУ</div><h3>Қолмен ораймыз</h3><p>Күріш жылы күйінде, балық суық күйінде жиналады.</p></div>
+    <div><div class="n">3 · ЖИНАУ</div><h3>Қораптаймыз</h3><p>Роллдар бір-біріне жабыспайтындай бөлек қалыпқа салынады.</p></div>
+    <div><div class="n">4 · ЖЕТКІЗУ</div><h3>Жеткіземіз</h3><p>Курьер ең қысқа жолмен барады, сіз қоңырауды күтесіз.</p></div>
+  </div>
+</section>
+
+<section id="delivery">
+  <div class="sec-head">
+    <div><span class="eyebrow">Жеткізу</span><h2>Қайда және қанша?</h2></div>
+    <p>Мысал аймақтар. Нақты сайтқа қалаңыздың шынайы аудандары салынады.</p>
+  </div>
+  <div class="deliv">
+    <div class="box">
+      <h3>Аймақтар</h3>
+      <table class="tbl">
+        <tr><td>Орталық аудан</td><td>30–40 мин · <span class="free">тегін</span></td></tr>
+        <tr><td>Іргелес аудандар</td><td>40–55 мин · 500 ₸</td></tr>
+        <tr><td>Шеткі аудандар</td><td>55–70 мин · 900 ₸</td></tr>
+        <tr><td>Өзің алып кету</td><td>15 мин · −10%</td></tr>
+      </table>
+    </div>
+    <div class="box">
+      <h3>Жұмыс уақыты</h3>
+      <div class="hours"><b>11:00 – 02:00</b><span style="color:var(--mute)">Күн сайын, демалыссыз. Түнгі екіге дейін жұмыс істейміз.</span></div>
+      <p style="margin-top:22px;color:var(--mute);font-size:14px">Жылдам жеткізу. Төлеуге Kaspi Red қолайлы.</p>
+    </div>
+  </div>
+</section>
+
+<section id="reviews" class="light">
+  <div class="sec-head">
+    <div><span class="eyebrow">Пікірлер</span><h2>Қонақтар не дейді</h2></div>
+  </div>
+  <div class="rev">
+    <figure><div class="stars">★★★★★</div><blockquote>Роллдар жылы келді, күріш босап кетпеген. Қораптауы да ұқыпты.</blockquote><figcaption>— Айгерім, мысал пікір</figcaption></figure>
+    <figure><div class="stars">★★★★★</div><blockquote>Спайси ролл ұнады. Өткір, бірақ тым емес. Қайта тапсырамын.</blockquote><figcaption>— Нұрлан, мысал пікір</figcaption></figure>
+    <figure><div class="stars">★★★★★</div><blockquote>Отбасымен сет алдық. Бәріне жетті, курьер уәде бойынша келді.</blockquote><figcaption>— Дана, мысал пікір</figcaption></figure>
+  </div>
+  <p class="note">Бұл мәтіндер дизайн макеті үшін жазылған. Нақты сайтқа шынайы қонақтардың пікірлері қойылады.</p>
+</section>
+
+<section id="order" style="padding-bottom:clamp(56px,8vw,104px)">
+  <div class="sec-head">
+    <div><span class="eyebrow">Тапсырыс</span><h2>Себет және байланыс</h2></div>
+  </div>
+  <div class="order">
+    <div class="cartbox">
+      <h3>Сіздің себетіңіз</h3>
+      <div id="lines"></div>
+      <div class="sum"><span style="color:var(--mute)">Барлығы</span><b id="total">0 ₸</b></div>
+      <p class="note" id="shipNote"></p>
+    </div>
+    <form class="formbox" id="form" novalidate>
+      <h3>Мекенжай</h3>
+      <label for="fn">Атыңыз</label><input id="fn" placeholder="Мысалы, Еркебұлан" autocomplete="name">
+      <label for="fp">Телефон</label><input id="fp" placeholder="+7 7__ ___ __ __" inputmode="tel" autocomplete="tel">
+      <label for="fa">Мекенжай</label><textarea id="fa" placeholder="Көше, үй, пәтер"></textarea>
+      <a class="btn" id="wa" href="https://wa.me/77776841200" target="_blank" rel="noopener">WhatsApp-пен тапсырыс беру</a>
+      <div class="msg" id="msg">Түймені басқанда тапсырыс мәтіні WhatsApp-қа дайын болып ашылады.</div>
+    </form>
+  </div>
+</section>
+</main>
+
+<footer><div class="foot">
+  <div><b>GRAND SUSHI</b>Суши, роллдар, пицца, ыстық тағамдар.<br>Ақтау қаласы.</div>
+  <div><b>Байланыс</b>WhatsApp: <a href="https://wa.me/77776841200" target="_blank" rel="noopener">+7 777 684 12 00</a><br>Instagram: <a href="https://www.instagram.com/grandsushi.aktau" target="_blank" rel="noopener">@grandsushi.aktau</a><br>Мекенжай: Ақтау, 18 а 4</div>
+  <div><b>Жұмыс уақыты</b>11:00 – 02:00, күн сайын</div>
+</div></footer>
+
+<script>
+var fmt=function(n){return n.toLocaleString('ru-RU').replace(/ /g,' ')+' ₸'};
+
+/* roll illustration: concentric rings of nori, rice, filling */
+function roll(c){
+  c=c||{};
+  var nori=c.nori||'#16161a', rice=c.rice||'#f6f1ea', f1=c.f1||'#e3261c', f2=c.f2||'#f2b134', top=c.top||'';
+  var s='<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="ролл">';
+  s+='<circle cx="60" cy="60" r="54" fill="'+nori+'"/>';
+  s+='<circle cx="60" cy="60" r="47" fill="'+rice+'"/>';
+  if(top){s+='<circle cx="60" cy="60" r="54" fill="'+top+'" opacity=".92"/><circle cx="60" cy="60" r="47" fill="'+rice+'"/>'}
+  for(var i=0;i<26;i++){var a=i*2.4,r=18+((i*7)%26);var x=60+Math.cos(a)*r,y=60+Math.sin(a)*r;s+='<ellipse cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" rx="3.4" ry="1.7" transform="rotate('+(i*37%180)+' '+x.toFixed(1)+' '+y.toFixed(1)+')" fill="#ded6cb" opacity=".55"/>'}
+  s+='<circle cx="60" cy="60" r="19" fill="'+f1+'"/><circle cx="60" cy="60" r="9" fill="'+f2+'"/><circle cx="57" cy="57" r="3" fill="#fff" opacity=".25"/>';
+  s+='</svg>';return s;
+}
+function nigiri(c){
+  c=c||{};
+  return '<svg viewBox="0 0 140 90" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="нигири"><rect x="14" y="40" width="112" height="36" rx="16" fill="#f6f1ea"/><path d="M8 38 C30 14 110 14 132 38 C132 54 8 54 8 38Z" fill="'+(c.top||'#e3261c')+'"/><path d="M30 34 C55 24 85 24 112 34" stroke="#fff" stroke-opacity=".35" stroke-width="3" fill="none"/><rect x="62" y="30" width="16" height="50" fill="#16161a" opacity=".92"/></svg>';
+}
+function sashimi(c){
+  c=c||{};var col=c.top||'#e3261c',s='<svg viewBox="0 0 140 90" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="сашими">';
+  for(var i=0;i<4;i++){s+='<rect x="'+(18+i*24)+'" y="14" width="30" height="62" rx="6" transform="skewX(-12) translate(18 0)" fill="'+col+'" opacity="'+(1-i*.1)+'"/>'}
+  return s+'</svg>';
+}
+function pizza(){
+  var s='<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="пицца"><circle cx="60" cy="60" r="54" fill="#f5b82e"/><circle cx="60" cy="60" r="46" fill="#e3261c"/><circle cx="60" cy="60" r="42" fill="#f8e6b0"/>';
+  [[44,44],[76,46],[60,70],[40,76],[80,78],[60,48]].forEach(function(p){s+='<circle cx="'+p[0]+'" cy="'+p[1]+'" r="8" fill="#b3121a"/><circle cx="'+(p[0]-2)+'" cy="'+(p[1]-2)+'" r="2" fill="#fff" opacity=".25"/>'});
+  return s+'<circle cx="60" cy="60" r="3" fill="#8fd14f"/></svg>';
+}
+function burger(){
+  return '<svg viewBox="0 0 140 110" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="бургер"><path d="M14 52 C14 14 126 14 126 52Z" fill="#f5b82e"/><circle cx="48" cy="30" r="2.5" fill="#fbfaf8"/><circle cx="72" cy="24" r="2.5" fill="#fbfaf8"/><circle cx="96" cy="31" r="2.5" fill="#fbfaf8"/><path d="M10 56 Q24 46 38 56 T66 56 T94 56 T130 56 L130 62 L10 62Z" fill="#8fd14f"/><rect x="12" y="62" width="116" height="16" rx="8" fill="#4a2616"/><path d="M12 78 H128 L116 90 L104 80 L92 90 L80 80 L68 90 L56 80 L44 90 L32 80 L20 90Z" fill="#e3261c"/><path d="M14 90 H126 C126 104 112 106 70 106 C28 106 14 104 14 90Z" fill="#f5b82e"/></svg>';
+}
+function bowl(){
+  return '<svg viewBox="0 0 140 110" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="ыстық тағам"><path d="M30 20 Q24 32 32 42 M62 14 Q56 28 64 40 M94 20 Q88 32 96 42" stroke="#f3eee8" stroke-opacity=".6" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M10 56 H130 C130 92 104 104 70 104 C36 104 10 92 10 56Z" fill="#1d1d20" stroke="#e3261c" stroke-width="3"/><ellipse cx="70" cy="56" rx="60" ry="9" fill="#f5b82e"/><circle cx="50" cy="55" r="5" fill="#e3261c"/><circle cx="84" cy="57" r="5" fill="#8fd14f"/></svg>';
+}
+function drink(){
+  return '<svg viewBox="0 0 90 120" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="сусын"><rect x="22" y="22" width="46" height="88" rx="10" fill="#1d1d20" stroke="#e3261c" stroke-width="3"/><rect x="22" y="56" width="46" height="54" rx="10" fill="#e3261c" opacity=".85"/><rect x="42" y="4" width="6" height="30" rx="3" fill="#f3eee8"/></svg>';
+}
+
+var PAL={
+  phil:{f1:'#f08a5d',f2:'#f6f1ea',top:'#f08a5d'},
+  cal:{f1:'#f2b134',f2:'#6dbb4a',top:'#f6a21f'},
+  dragon:{f1:'#e3261c',f2:'#f2b134',top:'#e3261c'},
+  veg:{f1:'#6dbb4a',f2:'#f2b134',top:'#2f7d3a'},
+  tuna:{f1:'#b3121a',f2:'#f6f1ea',top:'#b3121a'},
+  eel:{f1:'#7a3b1d',f2:'#6dbb4a',top:'#5a2a14'}
+};
+var MENU={
+ 'Роллы':[
+  {n:'Филадельфия',d:'Лосось, сливочный сыр, қиыр, нори, күріш.',p:3200,b:'Хит',i:roll(PAL.phil)},
+  {n:'Калифорния',d:'Краб, авокадо, қияр, масаго уылдырығы.',p:2800,i:roll(PAL.cal)},
+  {n:'Спайси ролл',d:'Тунец, өткір соус, қияр, үстінде қызыл масаго.',p:3600,b:'Өткір',i:roll(PAL.dragon)},
+  {n:'Веган ролл',d:'Авокадо, қияр, болгар бұрышы, күнжіт.',p:2400,b:'Веган',i:roll(PAL.veg)},
+  {n:'Унаги ролл',d:'Грильде піскен бума балығы, тәтті соус, күнжіт.',p:3400,i:roll(PAL.eel)},
+  {n:'Тунец спайси',d:'Тунец, спайси соус, қияр, тобико.',p:3300,i:roll(PAL.tuna)}
+ ],
+ 'Нигири':[
+  {n:'Лосось нигири',d:'Қолмен басылған күріш, жаңа лосось. 2 дана.',p:1400,i:nigiri({top:'#f08a5d'})},
+  {n:'Тунец нигири',d:'Тунец сүбесі, васаби. 2 дана.',p:1600,b:'Хит',i:nigiri({top:'#b3121a'})},
+  {n:'Асшаян нигири',d:'Қайнатылған асшаян, лимон. 2 дана.',p:1500,i:nigiri({top:'#f6c9a8'})},
+  {n:'Унаги нигири',d:'Грильде піскен бума балығы, тәтті соус. 2 дана.',p:1700,i:nigiri({top:'#5a2a14'})}
+ ],
+ 'Сашими':[
+  {n:'Лосось сашими',d:'Жұқа тілінген лосось. 5 тілім.',p:2900,i:sashimi({top:'#f08a5d'})},
+  {n:'Тунец сашими',d:'Тунец, дайкон, шисо жапырағы. 5 тілім.',p:3300,i:sashimi({top:'#b3121a'})},
+  {n:'Ассорти сашими',d:'Лосось, тунец, ақ балық. 9 тілім.',p:5200,b:'Сет',i:sashimi({top:'#e3261c'})}
+ ],
+ 'Пицца':[
+  {n:'Маргарита',d:'Томат соусы, моцарелла, жаңа тұқымдас шөптер.',p:3400,i:pizza()},
+  {n:'Пепперони',d:'Пепперони, моцарелла, томат соусы.',p:3900,b:'Хит',i:pizza()},
+  {n:'Төрт ірімшік',d:'Моцарелла, чеддер, пармезан, дор блю.',p:4200,i:pizza()}
+ ],
+ 'Ыстық тағам':[
+  {n:'Лагман',d:'Қолмен созылған кеспе, ет, көкөніс.',p:2900,i:bowl()},
+  {n:'Вок тауық етімен',d:'Кеспе, тауық еті, көкөніс, тәтті-тұзды соус.',p:3100,i:bowl()},
+  {n:'Жұмыртқалы күріш',d:'Қуырылған күріш, жұмыртқа, көк пияз.',p:2500,i:bowl()}
+ ],
+ 'Бургер':[
+  {n:'Классик бургер',d:'Үй тәрізді котлет, салат, қияр, соус.',p:2600,i:burger()},
+  {n:'Чизбургер',d:'Қос ірімшік, котлет, қызыл пияз, соус.',p:2800,b:'Хит',i:burger()}
+ ],
+ 'Сусындар':[
+  {n:'Жасмин шайы',d:'Ыстық шай, 500 мл.',p:900,i:drink()},
+  {n:'Лимонад',d:'Цитрус, жалбыз, мұз. 400 мл.',p:1500,i:drink()},
+  {n:'Морс',d:'Таңқурай мен қарақат, 400 мл.',p:1200,i:drink()}
+ ]
+};
+var BC={'Өткір':'hot','Веган':'veg'};
+var cart={}, ALL={};
+Object.keys(MENU).forEach(function(k){MENU[k].forEach(function(x){ALL[x.n]=x})});
+ALL['Grand сет']={n:'Grand сет',p:18900};
+
+var tabs=document.getElementById('tabs'), grid=document.getElementById('grid'), cur='Роллы';
+function renderTabs(){
+  tabs.innerHTML='';
+  Object.keys(MENU).forEach(function(k){
+    var b=document.createElement('button');b.className='tab';b.type='button';b.setAttribute('role','tab');
+    b.setAttribute('aria-selected',k===cur);b.textContent=k;
+    b.onclick=function(){cur=k;renderTabs();renderGrid()};tabs.appendChild(b);
+  });
+}
+function renderGrid(){
+  grid.innerHTML='';
+  MENU[cur].forEach(function(x){
+    var c=document.createElement('article');c.className='card';
+    c.innerHTML='<div class="thumb">'+(x.b?'<span class="badge'+(BC[x.b]?' '+BC[x.b]:'')+'">'+x.b+'</span>':'')+x.i+'</div><h3></h3><p class="desc"></p><div class="row"><span class="price">'+x.p.toLocaleString('ru-RU').replace(/ /g,' ')+'<small>₸</small></span><button class="add" type="button" aria-label="Себетке қосу"></button></div>';
+    c.querySelector('h3').textContent=x.n;c.querySelector('.desc').textContent=x.d;
+    var btn=c.querySelector('.add');btn.textContent='+';btn.onclick=function(){add(x.n)};
+    grid.appendChild(c);
+  });
+}
+function add(n){cart[n]=(cart[n]||0)+1;renderCart()}
+function change(n,d){cart[n]+=d;if(cart[n]<=0)delete cart[n];renderCart()}
+function renderCart(){
+  var el=document.getElementById('lines'),keys=Object.keys(cart),sum=0,cnt=0;
+  el.innerHTML='';
+  if(!keys.length){el.innerHTML='<p class="empty">Себет бос. Мәзірден позиция таңдаңыз.</p>'}
+  keys.forEach(function(k){
+    var it=ALL[k],q=cart[k];sum+=it.p*q;cnt+=q;
+    var r=document.createElement('div');r.className='line';
+    var nm=document.createElement('span');nm.textContent=k;
+    var qq=document.createElement('span');qq.className='q';
+    var m=document.createElement('button');m.type='button';m.textContent='−';m.setAttribute('aria-label','Азайту');m.onclick=function(){change(k,-1)};
+    var num=document.createElement('span');num.textContent=q;
+    var p=document.createElement('button');p.type='button';p.textContent='+';p.setAttribute('aria-label','Көбейту');p.onclick=function(){change(k,1)};
+    qq.append(m,num,p);
+    var pr=document.createElement('span');pr.className='price';pr.style.fontSize='16px';pr.textContent=fmt(it.p*q);
+    r.append(nm,qq,pr);el.appendChild(r);
+  });
+  document.getElementById('total').textContent=fmt(sum);
+  document.getElementById('navCount').textContent=cnt;
+  updWA();
+}
+document.getElementById('addSet').onclick=function(){add('Grand сет');document.getElementById('order').scrollIntoView({behavior:'smooth'})};
+document.getElementById('form').addEventListener('submit',function(e){e.preventDefault()});
+['fn','fp','fa'].forEach(function(id){document.getElementById(id).addEventListener('input',updWA)});
+function updWA(){
+  var t='Сәлем! Тапсырыс бергім келеді.\n',sum=0;
+  Object.keys(cart).forEach(function(k){t+='• '+k+' × '+cart[k]+'\n';sum+=ALL[k].p*cart[k]});
+  if(sum)t+='Барлығы: '+fmt(sum)+'\n';
+  var n=document.getElementById('fn').value.trim(),ph=document.getElementById('fp').value.trim(),ad=document.getElementById('fa').value.trim();
+  if(n)t+='Аты: '+n+'\n';if(ph)t+='Телефон: '+ph+'\n';if(ad)t+='Мекенжай: '+ad+'\n';
+  document.getElementById('wa').href='https://wa.me/77776841200?text='+encodeURIComponent(t);
+}
+document.getElementById('heroRoll').innerHTML=roll({f1:'#e3261c',f2:'#f2b134',top:'#f08a5d'});
+renderTabs();renderGrid();
+add('Филадельфия');add('Тунец нигири');
+</script>
+
+</body></html>
